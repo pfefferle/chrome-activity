@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+	    margin: 15px;
+	    padding: 0;
+	    width: 420px;
+	    font-family: Helvetica, sans-serif;
+	    color: #3b3b3b;
+	    overflow-x: hidden;
+	  }
+
+	  #header {
+	    overflow: hidden;
+	  }
+
+	  #icon {
+	    display: block;
+	    float: left;
+	  }
+
+	  #header h1 {
+	    color: #43b4de;
+	    font-size: 19px;
+	    padding-top: 0px;
+	    margin-top: 0px;
+	  }
+	  
+		li {
+		  list-style-type: none;
+		  padding-left: 20px;
+		  background: transparent url(img/as-b-16x16.png) no-repeat;
+		}
+		
+		ul {
+		  margin: 0px;
+		  padding: 0px;
+		}
+  </style>
+  <script>
+    chrome.tabs.getSelected(null, function(tab) {
+      // get the microformats from the current tab
+      var activityFeeds = chrome.extension.getBackgroundPage().activityFeeds[tab.id];
+      // iterate feeds
+      for (var i = 0, activity; activity = activityFeeds[i]; i++) {
+        // create new link and list-element
+		    var a = document.createElement("a");
+		    var li = document.createElement("li");
+		    // add link attributes
+		    a.href = activity.href;
+		    a.target = "_blank";
+        
+        var text = "";
+        // check if title is set
+		    if (activity.title != "") {
+		      text = activity.title;
+		    } else {
+		      text = activity.href;
+		    }    
+        // add title
+		    a.appendChild(document.createTextNode(text));
+		    // add list element
+		    document.getElementById("streams").appendChild(li).appendChild(a);
+		  }
+    });
+  </script>
+</head>
+<body>
+  <div id="header">
+    <h1>The following streams were found:</h1>
+  </div>
+  <ul id="streams">
+  </ul>
+</body>
+</html>

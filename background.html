@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+  var activityFeeds = {};
+
+  chrome.extension.onRequest.addListener(function(request, sender) {
+    var tabId = sender.tab.id;
+
+    if (request.msg == "activityIcon") {
+      // add feeds to global var
+      activityFeeds[tabId] = request.feeds;
+      
+      console.log(activityFeeds);
+      
+      // We have received a list of feed urls found on the page.
+      // Enable the page action icon.
+      chrome.pageAction.show(tabId);
+    }
+  });
+</script>
+</head>
+</html>
